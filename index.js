@@ -1,3 +1,4 @@
+const Inserter = require('./inserter')
 const scrapeIt = require('scrape-it')
 
 const scrape = async ({opts, url}) => {
@@ -6,6 +7,8 @@ const scrape = async ({opts, url}) => {
 }
 
 (async () => {
+  const inserter = new Inserter()
+
   // scrape all of the major categories
   const {categories} = await scrape({
     opts: {
@@ -84,14 +87,6 @@ const scrape = async ({opts, url}) => {
                 convert: (html) => parseInt(html, 10),
                 selector: 'meta[name="apple:content_id"]',
               },
-              numReviews: {
-                convert: (html) => {
-                  if (html) {
-                    return parseInt(html.split(' ')[0], 10)
-                  }
-                },
-                selector: '.rating-count',
-              },
               reviewsAvg: {
                 convert: (html) => {
                   if (html) {
@@ -99,12 +94,20 @@ const scrape = async ({opts, url}) => {
                   }
                 },
                 selector: 'span[itemprop="ratingValue"]'
-              }
+              },
+              reviewsCnt: {
+                convert: (html) => {
+                  if (html) {
+                    return parseInt(html.split(' ')[0], 10)
+                  }
+                },
+                selector: '.rating-count',
+              },
             },
             url: podcast.url,
           })
 
-          console.log({
+          inserter.push({
             category: category.title,
             title: podcast.title,
             url: podcast.url,

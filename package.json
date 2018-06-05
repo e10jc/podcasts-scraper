@@ -6,9 +6,15 @@
   "author": "Ethan Jon",
   "license": "UNLICENSED",
   "dependencies": {
+    "knex": "^0.14.6",
+    "mysql2": "^1.5.3",
     "scrape-it": "^5.0.5"
   },
   "scripts": {
+    "knex": "knex",
     "start": "node index.js"
+  },
+  "devDependencies": {
+    "dotenv": "^6.0.0"
   }
 }
