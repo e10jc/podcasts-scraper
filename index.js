@@ -1,4 +1,5 @@
 const Inserter = require('./inserter')
+const ProgressBar = require('progress')
 const scrapeIt = require('scrape-it')
 
 const scrape = async ({opts, url}) => {
@@ -60,7 +61,9 @@ const scrape = async ({opts, url}) => {
       })
 
       // for each page of podcasts:
-      for (const page of pages) {
+      for (let pageI = 0; pageI < pages.length; ++pageI) {
+        const page = pages[pageI]
+
         // scrape urls to each podcast
         const {podcasts} = await scrape({
           opts: {
@@ -76,6 +79,8 @@ const scrape = async ({opts, url}) => {
           },
           url: page.url,
         })
+
+        const podcastsProgressBar = new ProgressBar(`${category.title} page ${pageI + 1} :bar :elapseds :percent`, {total: podcasts.length})
 
         // for each podcast:
         for (const podcast of podcasts) {
@@ -107,14 +112,18 @@ const scrape = async ({opts, url}) => {
             url: podcast.url,
           })
 
-          inserter.push({
+          await inserter.push({
             category: category.title,
             title: podcast.title,
             url: podcast.url,
             ...details
           })
+
+          podcastsProgressBar.tick()
         }
       }
     }
   }
+
+  await inserter.insert()
 })()
