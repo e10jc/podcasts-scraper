@@ -1,0 +1,14 @@
+{
+  "name": "podcasts-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "author": "Ethan Jon",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "scrape-it": "^5.0.5"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
