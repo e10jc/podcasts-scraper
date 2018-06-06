@@ -25,7 +25,7 @@ const scrapeCategories = async () => {
   const createCategorySymbol = (category) => category.replace(/\W/g, '').toLowerCase()
 
   const categories = await scrapeCategories()
-  const categorySymbols = categories.map(category => createCategorySymbol(category.title))
+  const categorySymbols = categories.map(c => createCategorySymbol(c.title))
   const progressBarStr = categorySymbols.map(cs => `${cs}::${cs}`).join(' ')
   const progressBar = new ProgressBar(progressBarStr, {total: Number.MAX_SAFE_INTEGER})
 
@@ -35,10 +35,10 @@ const scrapeCategories = async () => {
   }, {})
 
   for (const category of categories) {
-    const child = fork('scrape-category.js', [category.title, category.url])
+    const child = fork('scrape-category.js', [category.title, category.url], {stdio: 'ignore'})
 
     child.on('message', () => {
-      ticks[createCategorySymbol(category.title)] += 1
+      ++ticks[createCategorySymbol(category.title)]
       progressBar.tick(ticks)
     })
   }

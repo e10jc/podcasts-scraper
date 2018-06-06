@@ -21,7 +21,7 @@
     "dev": "next",
     "preserve": "next build",
     "serve": "next start --p 8081",
-    "scrape": "node scrape.js",
+    "scrape-categories": "node scrape-categories.js",
     "prestart": "npm run migrate",
     "start": "pm2 start process.yml --no-daemon"
   },
