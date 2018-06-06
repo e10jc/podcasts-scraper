@@ -18,7 +18,8 @@
     "knex": "knex",
     "scrape": "node scrape.js",
     "dev": "next",
-    "start": "next start"
+    "prestart": "next build",
+    "start": "next start --p 8081"
   },
   "devDependencies": {
     "dotenv": "^6.0.0"
