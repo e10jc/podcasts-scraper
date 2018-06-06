@@ -5,13 +5,19 @@ import knex from '../knex'
 export default class extends React.Component {
   static async getInitialProps () {
     const podcasts = await knex('podcasts').orderBy('reviewsCnt', 'desc').limit(1000)
-    return {podcasts}
+    const podcastsCnt = (await knex('podcasts').count('* as cnt'))[0].cnt
+    return {podcasts, podcastsCnt}
   }
 
   render () {
     return (
       <div>
-        <h1 className='text-center'>Podcasts</h1>
+        <div className='text-center'>
+          <h1 className="margin-0">Podcasts</h1>
+          <h2 className="h5">
+            <small>{this.props.podcastsCnt} in database</small>
+          </h2>
+        </div>
 
         <table>
           <thead>
