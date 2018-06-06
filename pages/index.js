@@ -11,13 +11,15 @@ export default class extends React.Component {
   render () {
     return (
       <div>
-        <h1>Podcasts</h1>
+        <h1 className='text-center'>Podcasts</h1>
+
         <table>
           <thead>
             <tr>
               <th>Name</th>
-              <th>Category</th>
-              <th>Reviews</th>
+              <th className='text-center'>Category</th>
+              <th className='text-center'>Avg</th>
+              <th className='text-center'>Num</th>
             </tr>
           </thead>
           <tbody>
@@ -26,10 +28,9 @@ export default class extends React.Component {
                 <td>
                   <a href={podcast.url}>{podcast.title}</a>
                 </td>
-                <td>{podcast.category}</td>
-                <td>
-                  {podcast.reviewsAvg && podcast.reviewsCnt && <span>{podcast.reviewsAvg} / {podcast.reviewsCnt} ratings</span>}
-                </td>
+                <td className='text-center'>{podcast.category}</td>
+                <td className='text-center'>{podcast.reviewsAvg}</td>
+                <td className='text-center'>{podcast.reviewsCnt}</td>
               </tr>
             ))}
           </tbody>
