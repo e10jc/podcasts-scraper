@@ -1,7 +1,7 @@
 apps:
   - name: 'server'
     script: 'npm'
-    args: 'start'
+    args: 'serve'
 
   - name: 'scraper'
     script: 'npm'
