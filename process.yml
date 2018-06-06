@@ -1,9 +1,9 @@
 apps:
   - name: 'server'
     script: 'npm'
-    args: 'serve'
+    args: 'run serve'
 
   - name: 'scraper'
     script: 'npm'
-    args: 'scrape'
+    args: 'run scrape'
     max_restarts: 99999
