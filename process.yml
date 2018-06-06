@@ -1,0 +1,9 @@
+apps:
+  - name: 'server'
+    script: 'npm'
+    args: 'start'
+
+  - name: 'scraper'
+    script: 'npm'
+    args: 'scrape'
+    max_restarts: 99999
