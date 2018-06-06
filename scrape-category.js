@@ -83,13 +83,8 @@ const scrapePodcast = async (podcast) => {
   return details
 }
 
-(async () => {
+module.exports = async (category) => {
   const inserter = new Inserter()
-
-  const category = {
-    title: process.argv[2],
-    url: process.argv[3],
-  }
   
   for (const letter of await scrapeLetters(category)) {
     const pages = await scrapePages(letter)
@@ -99,17 +94,16 @@ const scrapePodcast = async (podcast) => {
       const podcasts = await scrapePodcasts(page)
 
       for (const podcast of podcasts) {
-        await inserter.push({
+        const row = {
           category: category.title,
           title: podcast.title,
           url: podcast.url,
           ...await scrapePodcast(podcast)
-        })
-
-        process.send('tick')
+        }
+        await inserter.push(row)
       }
     }
   }
 
   await inserter.insert()
-})()
+}
