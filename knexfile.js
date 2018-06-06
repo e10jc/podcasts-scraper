@@ -13,5 +13,5 @@ module.exports = {
     user: process.env.RDS_USERNAME,
     database: process.env.RDS_DB_NAME
   },
-  debug: true,
+  debug: false,
 }

@@ -8,12 +8,17 @@
   "dependencies": {
     "knex": "^0.14.6",
     "mysql2": "^1.5.3",
+    "next": "^6.0.3",
     "progress": "^2.0.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.0",
     "scrape-it": "^5.0.5"
   },
   "scripts": {
     "knex": "knex",
-    "start": "node index.js"
+    "scrape": "node scrape.js",
+    "dev": "next",
+    "start": "next start"
   },
   "devDependencies": {
     "dotenv": "^6.0.0"
