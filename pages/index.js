@@ -15,7 +15,7 @@ export default class extends React.Component {
         <div className='text-center'>
           <h1 className="margin-0">Podcasts</h1>
           <h2 className="h5">
-            <small>{this.props.podcastsCnt} in database</small>
+            <small>{this.props.podcastsCnt.toLocaleString()} in database</small>
           </h2>
         </div>
 
@@ -35,8 +35,8 @@ export default class extends React.Component {
                   <a href={podcast.url}>{podcast.title}</a>
                 </td>
                 <td className='text-center'>{podcast.category}</td>
-                <td className='text-center'>{podcast.reviewsAvg}</td>
-                <td className='text-center'>{podcast.reviewsCnt}</td>
+                <td className='text-center'>{podcast.reviewsAvg && podcast.reviewsAvg.toFixed(2)}</td>
+                <td className='text-center'>{podcast.reviewsCnt && podcast.reviewsCnt.toLocaleString()}</td>
               </tr>
             ))}
           </tbody>

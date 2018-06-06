@@ -17,9 +17,11 @@ class Inserter {
   }
 
   async insert() {
-    const insertSQL = knex(TABLE_NAME).insert(this.rows).toString()
-    await knex.raw(insertSQL.replace(/^insert/, 'insert ignore'))
-    this.rows = []
+    if (this.rows.length > 0) {
+      const insertSQL = knex(TABLE_NAME).insert(this.rows).toString()
+      await knex.raw(insertSQL.replace(/^insert/, 'insert ignore'))
+      this.rows = []
+    }
   }
 }
 
