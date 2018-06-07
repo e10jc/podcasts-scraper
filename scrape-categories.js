@@ -1,3 +1,5 @@
+const ProgressBar = require('progress')
+
 const Inserter = require('./inserter')
 const scrape = require('./scrape')
 
@@ -76,13 +78,17 @@ const scrapePodcast = async (podcast) => {
     opts: {
       id: {
         attr: 'content',
-        convert: (html) => parseInt(html, 10),
+        convert: (html) => {
+          const num = parseInt(html, 10)
+          return isNaN(num) ? null : num
+        },
         selector: 'meta[name="apple:content_id"]',
       },
       reviewsAvg: {
         convert: (html) => {
           if (html) {
-            return parseFloat(html)
+            const num = parseFloat(html)
+            return isNaN(num) ? null : num
           }
         },
         selector: 'span[itemprop="ratingValue"]'
@@ -90,7 +96,8 @@ const scrapePodcast = async (podcast) => {
       reviewsCnt: {
         convert: (html) => {
           if (html) {
-            return parseInt(html.split(' ')[0], 10)
+            const num = parseInt(html.split(' ')[0], 10)
+            return isNaN(num) ? null : num
           }
         },
         selector: '.rating-count',
@@ -103,6 +110,7 @@ const scrapePodcast = async (podcast) => {
 
 (async () => {
   const inserter = new Inserter()
+  const progressBar = new ProgressBar(':current :rate', {total: Number.MAX_SAFE_INTEGER})
 
   for (const category of await scrapeCategories()) {
     for (const letter of await scrapeLetters(category)) {
@@ -115,6 +123,7 @@ const scrapePodcast = async (podcast) => {
             ...await scrapePodcast(podcast)
           }
           await inserter.push(row)
+          progressBar.tick()
         }
       }
     }
