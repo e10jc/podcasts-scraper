@@ -3,20 +3,31 @@ import React from 'react'
 import knex from '../knex'
 
 export default class extends React.Component {
-  static async getInitialProps () {
-    const podcasts = await knex('podcasts').orderBy('reviewsCnt', 'desc').limit(1000)
+  static async getInitialProps ({query}) {
+    const podcasts = await knex('podcasts').orderBy('reviewsCnt', 'desc').where(query.category ? {category: query.category} : {}).limit(100)
     const podcastsCnt = (await knex('podcasts').count('* as cnt'))[0].cnt
-    return {podcasts, podcastsCnt}
+    const categories = (await knex('podcasts').distinct('category')).map(c => c.category)
+    return {categories, podcasts, podcastsCnt, query}
   }
 
   render () {
     return (
       <div>
-        <div className='text-center'>
-          <h1 className="margin-0">Podcasts</h1>
-          <h2 className="h5">
-            <small>{this.props.podcastsCnt.toLocaleString()} in database</small>
-          </h2>
+        <div className="grid-x padding-1 align-justify align-middle">
+          <div>
+            <h1 className="margin-0 h2">Podcasts</h1>
+            <h2 className="h5">
+              <small>{this.props.podcastsCnt.toLocaleString()} in database</small>
+            </h2>
+          </div>
+          <div>
+            <select name='category' onChange={this.handleCategoryChange}>
+              <option value=''></option>
+              {this.props.categories.map(c => (
+                <option key={c} selected={c === this.props.query.category} value={encodeURIComponent(c)}>{c}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <table>
@@ -43,5 +54,9 @@ export default class extends React.Component {
         </table>
       </div>
     )
+  }
+
+  handleCategoryChange = e => {
+    window.location.href = `/?category=${e.target.value}`
   }
 }
