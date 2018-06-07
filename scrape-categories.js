@@ -4,7 +4,7 @@ const Inserter = require('./inserter')
 const scrape = require('./scrape')
 
 const scrapeCategories = async () => {
-  const {categories} = await scrape({
+  const data = await scrape({
     opts: {
       categories: {
         listItem: 'a.top-level-genre',
@@ -18,11 +18,11 @@ const scrapeCategories = async () => {
     },
     url: 'https://itunes.apple.com/us/genre/podcasts/id26?mt=2',
   })
-  return categories
+  return data ? data.categories : []
 }
 
 const scrapeLetters = async (category) => {
-  const {letters} = await scrape({
+  const data = await scrape({
     opts: {
       letters: {
         listItem: 'ul.alpha li a',
@@ -35,11 +35,11 @@ const scrapeLetters = async (category) => {
     },
     url: category.url,
   })
-  return letters
+  return data ? data.letters : []
 }
 
 const scrapePages = async (letter) => {
-  const {pages} = await scrape({
+  const data = await scrape({
     opts: {
       pages: {
         listItem: 'ul.paginate li a',
@@ -52,11 +52,11 @@ const scrapePages = async (letter) => {
     },
     url: letter.url,
   })
-  return pages
+  return data ? data.pages : []
 }
 
 const scrapePodcasts = async (page) => {
-  const {podcasts} = await scrape({
+  const data = await scrape({
     opts: {
       podcasts: {
         listItem: '#selectedcontent ul li a',
@@ -70,11 +70,11 @@ const scrapePodcasts = async (page) => {
     },
     url: page.url,
   })
-  return podcasts
+  return data ? data.podcasts : []
 }
 
 const scrapePodcast = async (podcast) => {
-  const details = await scrape({
+  const data = await scrape({
     opts: {
       id: {
         attr: 'content',
@@ -105,7 +105,7 @@ const scrapePodcast = async (podcast) => {
     },
     url: podcast.url,
   })
-  return details
+  return data || {}
 }
 
 const shuffle = arr => {
@@ -114,7 +114,7 @@ const shuffle = arr => {
 
 (async () => {
   const inserter = new Inserter()
-  const progressBar = new ProgressBar(':current scraped, :rate p/s', {total: Number.MAX_SAFE_INTEGER})
+  const progressBar = new ProgressBar(':current scraped, :rate p/s :title', {total: Number.MAX_SAFE_INTEGER})
 
   for (const category of shuffle(await scrapeCategories())) {
     for (const letter of shuffle(await scrapeLetters(category))) {
@@ -127,7 +127,9 @@ const shuffle = arr => {
             ...await scrapePodcast(podcast)
           }
           await inserter.push(row)
-          progressBar.tick()
+          progressBar.tick({
+            title: `${category.title} - ${podcast.title}`
+          })
         }
       }
     }
