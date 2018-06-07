@@ -23,7 +23,8 @@
     "serve": "next start --p 8081",
     "scrape-categories": "node scrape-categories.js",
     "prestart": "npm run migrate",
-    "start": "pm2 start process.yml --no-daemon"
+    "start": "pm2 start process.yml",
+    "poststart": "pm2 logs"
   },
   "devDependencies": {
     "dotenv": "^6.0.0"
