@@ -108,14 +108,18 @@ const scrapePodcast = async (podcast) => {
   return details
 }
 
+const shuffle = arr => {
+  return arr.sort(() => 0.5 - Math.random())
+}
+
 (async () => {
   const inserter = new Inserter()
-  const progressBar = new ProgressBar(':current :rate', {total: Number.MAX_SAFE_INTEGER})
+  const progressBar = new ProgressBar(':current scraped, :rate p/s', {total: Number.MAX_SAFE_INTEGER})
 
-  for (const category of await scrapeCategories()) {
-    for (const letter of await scrapeLetters(category)) {
-      for (const page of await scrapePages(letter)) {
-        for (const podcast of await scrapePodcasts(page)) {
+  for (const category of shuffle(await scrapeCategories())) {
+    for (const letter of shuffle(await scrapeLetters(category))) {
+      for (const page of shuffle(await scrapePages(letter))) {
+        for (const podcast of shuffle(await scrapePodcasts(page))) {
           const row = {
             category: category.title,
             title: podcast.title,
