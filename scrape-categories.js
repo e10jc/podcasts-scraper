@@ -112,28 +112,32 @@ const shuffle = arr => {
   return arr.sort(() => 0.5 - Math.random())
 }
 
-(async () => {
-  const inserter = new Inserter()
-  const progressBar = new ProgressBar(':current scraped, :rate p/s :title', {total: Number.MAX_SAFE_INTEGER})
-
-  for (const category of shuffle(await scrapeCategories())) {
-    for (const letter of shuffle(await scrapeLetters(category))) {
-      for (const page of shuffle(await scrapePages(letter))) {
-        for (const podcast of shuffle(await scrapePodcasts(page))) {
-          const row = {
-            category: category.title,
-            title: podcast.title,
-            url: podcast.url,
-            ...await scrapePodcast(podcast)
-          }
-          await inserter.push(row)
-          progressBar.tick({
-            title: `${category.title} - ${podcast.title}`
-          })
+const processCategory = ({inserter, progressBar}) => async category => {
+  for (const letter of shuffle(await scrapeLetters(category))) {
+    for (const page of shuffle(await scrapePages(letter))) {
+      for (const podcast of shuffle(await scrapePodcasts(page))) {
+        const row = {
+          category: category.title,
+          title: podcast.title,
+          url: podcast.url,
+          ...await scrapePodcast(podcast)
         }
+        await inserter.push(row)
+        progressBar.tick({
+          title: `${category.title} - ${podcast.title}`
+        })
       }
     }
   }
+}
+
+(async () => {
+  const inserter = new Inserter()
+  const progressBar = new ProgressBar(':current scraped, :rate p/s, Last: :title', {total: Number.MAX_SAFE_INTEGER})
+
+  const categories = shuffle(await scrapeCategories())
+  const processFn = processCategory({inserter, progressBar})
+  await Promise.all(categories.map(processFn))
 
   await inserter.insert()
 })()
