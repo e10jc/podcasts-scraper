@@ -3,7 +3,23 @@ apps:
     script: 'npm'
     args: 'run serve'
 
-  - name: 'scraper'
-    script: 'npm'
-    args: 'run scrape-categories'
-    max_restarts: 99999
+  - name: 'scrape-categories'
+    script: 'node'
+    args: 'scrape-categories'
+    autorestart: false
+
+  - name: 'process-categories'
+    script: 'node'
+    args: 'process-categories.js'
+
+  - name: 'process-letters'
+    script: 'node'
+    args: 'process-letters.js'
+
+  - name: 'process-pages'
+    script: 'node'
+    args: 'process-pages.js'
+
+  - name: 'process-podcasts'
+    script: 'node'
+    args: 'process-podcasts.js'

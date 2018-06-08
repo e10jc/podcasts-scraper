@@ -6,11 +6,11 @@
   "author": "Ethan Jon",
   "license": "UNLICENSED",
   "dependencies": {
+    "bee-queue": "^1.2.2",
     "knex": "^0.14.6",
     "mysql2": "^1.5.3",
     "next": "^6.0.3",
     "pm2": "^2.10.4",
-    "progress": "^2.0.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "scrape-it": "^5.0.5"
@@ -21,7 +21,6 @@
     "dev": "next",
     "preserve": "next build",
     "serve": "next start --p 8081",
-    "scrape-categories": "node scrape-categories.js",
     "prestart": "npm run migrate",
     "start": "pm2 start process.yml",
     "poststart": "pm2 logs"

@@ -1,6 +1,6 @@
 const knex = require('./knex')
 
-const BATCH_SIZE = 10
+const BATCH_SIZE = 100
 const TABLE_NAME = 'podcasts'
 
 class Inserter {
