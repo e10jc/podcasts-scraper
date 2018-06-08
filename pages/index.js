@@ -19,7 +19,9 @@ export default class extends React.Component {
       <div>
         <div className="grid-x padding-1 align-justify align-middle">
           <div>
-            <h1 className="margin-0 h2">Podcasts</h1>
+            <h1 className="margin-0 h2">
+              <a href='/'>Podcasts</a>
+            </h1>
             <h2 className="h5">
               <small>{this.props.podcastsCnt.toLocaleString()} in database</small>
             </h2>
