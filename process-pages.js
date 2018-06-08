@@ -6,6 +6,6 @@ pagesQueue.process(async ({data: {category, page}}) => {
   for (const podcast of shuffle(await scrapePodcasts(page))) {
     const job = podcastsQueue.createJob({category, podcast})
     job.save()
-    console.log(`Queued: ${category.title} - ${podcast.title}`)
+    // console.log(`Queued: ${category.title} - ${podcast.title}`)
   }
 })

@@ -27,7 +27,7 @@
     "process-pages": "node process-pages.js",
     "process-podcasts": "node process-podcasts.js",
     "prestart": "run-p scrape-categories",
-    "start": "run-p serve process-categories process-letters process-pages process-podcasts process-podcasts process-podcasts process-podcasts"
+    "start": "run-p serve process-categories process-letters process-pages process-podcasts process-podcasts process-podcasts process-podcasts process-podcasts"
   },
   "devDependencies": {
     "dotenv": "^6.0.0"

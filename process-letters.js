@@ -6,6 +6,6 @@ lettersQueue.process(async ({data: {category, letter}}) => {
   for (const page of shuffle(await scrapePages(letter))) {
     const job = pagesQueue.createJob({category, page})
     job.save()
-    console.log(`Queued: ${page.url}`)
+    // console.log(`Queued: ${page.url}`)
   }
 })

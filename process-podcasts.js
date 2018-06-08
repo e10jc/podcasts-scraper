@@ -13,5 +13,5 @@ podcastsQueue.process(async ({data: {category, podcast}}) => {
     ...details
   }
   await inserter.push(row)
-  console.log(`Inserted: ${category.title} - ${podcast.title}`)
+  // console.log(`Inserted: ${category.title} - ${podcast.title}`)
 })
