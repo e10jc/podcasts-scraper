@@ -2,8 +2,7 @@ const {shuffle} = require('./helpers')
 const {podcastsQueue} = require('./queues')
 const {scrapePodcast} = require('./scrape')
 
-const Inserter = require('./inserter')
-const inserter = new Inserter()
+const inserter = require('./inserter')
 
 podcastsQueue.process(async ({data: {category, podcast}}) => {
   const details = await scrapePodcast(podcast)
