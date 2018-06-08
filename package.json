@@ -19,15 +19,15 @@
     "rollback": "knex migrate:rollback",
     "migrate": "knex migrate:latest",
     "dev": "next",
-    "preserve": "next build",
+    "build": "next build",
     "serve": "next start --p 8081",
     "scrape-categories": "node scrape-categories.js",
     "process-categories": "node process-categories.js",
     "process-letters": "node process-letters.js",
     "process-pages": "node process-pages.js",
     "process-podcasts": "node process-podcasts.js",
-    "prestart": "run-p scrape-categories",
-    "start": "run-p serve process-categories process-letters process-pages process-podcasts process-podcasts process-podcasts process-podcasts process-podcasts"
+    "prestart": "run-p scrape-categories migrate",
+    "start": "run-p serve process-categories process-letters process-pages process-podcasts process-podcasts"
   },
   "devDependencies": {
     "dotenv": "^6.0.0"
