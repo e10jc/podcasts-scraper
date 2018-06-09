@@ -18,9 +18,11 @@ class Inserter {
 
   async insert() {
     if (this.rows.length > 0) {
-      const insertSQL = knex(TABLE_NAME).insert(this.rows).toString()
+      const rows = this.rows.slice(0)
       this.rows = []
-      await knex.raw(insertSQL.replace(/^insert/, 'insert ignore'))
+
+      const insertSQL = knex(TABLE_NAME).insert(rows).toString() + ' ON DUPLICATE KEY UPDATE updated_at = NOW()'
+      await knex.raw(insertSQL)
     }
   }
 }
