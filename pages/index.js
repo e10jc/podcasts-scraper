@@ -1,3 +1,4 @@
+import {format as formatDate} from 'date-fns'
 import React from 'react'
 
 import knex from '../knex'
@@ -23,7 +24,10 @@ export default class extends React.Component {
               <a href='/'>Podcasts</a>
             </h1>
             <h2 className="h5">
-              <small>{this.props.podcastsCnt.toLocaleString()} in database</small>
+              <small>
+                <span>{this.props.podcastsCnt.toLocaleString()} scraped, </span>
+                <span>updated {formatDate(this.lastUpdate(), 'MMMM D')}</span>
+              </small>
             </h2>
           </div>
           <div>
@@ -51,9 +55,9 @@ export default class extends React.Component {
                 <td>
                   <a href={podcast.url}>{podcast.title}</a>
                 </td>
-                <td className='text-center'>{podcast.category}</td>
-                <td className='text-center'>{podcast.reviewsAvg && podcast.reviewsAvg.toFixed(2)}</td>
-                <td className='text-center'>{podcast.reviewsCnt && podcast.reviewsCnt.toLocaleString()}</td>
+                <td className='text-center text-nowrap'>{podcast.category}</td>
+                <td className='text-center text-nowrap'>{podcast.reviewsAvg && podcast.reviewsAvg.toFixed(2)}</td>
+                <td className='text-center text-nowrap'>{podcast.reviewsCnt && podcast.reviewsCnt.toLocaleString()}</td>
               </tr>
             ))}
           </tbody>
@@ -70,6 +74,13 @@ export default class extends React.Component {
   handleCategoryChange = e => {
     window.location.href = e.target.value ? `/?category=${e.target.value}` : '/'
   }
+
+  lastUpdate = () => (
+    this.props.podcasts.reduce((last, p) => {
+      const updated = new Date(p.updated_at)
+      return updated > last ? updated : last
+    }, new Date(0))
+  )
 
   pageHrefBuilder = (page) => {
     const {category} = this.props

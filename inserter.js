@@ -18,10 +18,14 @@ class Inserter {
 
   async insert() {
     if (this.rows.length > 0) {
-      const rows = this.rows.slice(0)
+      const rows = this.rows.map(row => ({
+        created_at: knex.fn.now(),
+        updated_at: knex.fn.now(),
+        ...row
+      }))
       this.rows = []
 
-      const insertSQL = knex(TABLE_NAME).insert(rows).toString() + ' ON DUPLICATE KEY UPDATE updated_at = NOW()'
+      const insertSQL = knex(TABLE_NAME).insert(rows).toString() + ' ON DUPLICATE KEY UPDATE title = VALUES(title), category = VALUES(category), url = VALUES(url), reviewsCnt = VALUES(reviewsCnt), reviewsAvg = VALUES(reviewsAvg), updated_at = VALUES(updated_at)'
       await knex.raw(insertSQL)
     }
   }
