@@ -12,7 +12,7 @@ const {
 const Inserter = require('./inserter')
 const inserter = new Inserter()
 
-const progressBar = new ProgressBar(':letters letters, :pages pages, :podcasts podcasts, :details details', {total: Number.MAX_SAFE_INTEGER})
+const progressBar = new ProgressBar(':letters letters, :pages pages, :podcasts podcasts, :details details, :memory MB used', {total: Number.MAX_SAFE_INTEGER})
 const ticks = {letters: 0, pages: 0, podcasts: 0, details: 0}
 
 queue.process(10, async ({data: {category, letter, page, podcast}}) => {
@@ -51,5 +51,6 @@ queue.process(10, async ({data: {category, letter, page, podcast}}) => {
     }
   }
 
+  ticks.memory = process.memoryUsage().heapUsed / 1024 / 1024
   progressBar.tick(ticks)
 })
