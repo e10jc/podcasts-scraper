@@ -1,6 +1,11 @@
 const Queue = require('bee-queue')
 
-const settings = {redis: {host: process.env.REDIS_HOST}}
+const settings = {
+  redis: {host: process.env.REDIS_HOST},
+  removeOnFailure: true,
+  removeOnSuccess: true,
+}
+
 const categoriesQueue = new Queue('categories', settings)
 const lettersQueue = new Queue('letters', settings)
 const pagesQueue = new Queue('pages', settings)

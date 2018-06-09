@@ -4,7 +4,7 @@ const {scrapePodcast} = require('./scrape')
 
 const inserter = require('./inserter')
 
-podcastsQueue.process(async ({data: {category, podcast}}) => {
+podcastsQueue.process(10, async ({data: {category, podcast}}) => {
   const details = await scrapePodcast(podcast)
   const row = {
     category: category.title,
