@@ -11,6 +11,7 @@
     "mysql2": "^1.5.3",
     "next": "^6.0.3",
     "npm-run-all": "^4.1.3",
+    "progress": "^2.0.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
     "scrape-it": "^5.0.5"
@@ -23,12 +24,9 @@
     "preserve": "run-s build",
     "serve": "next start --p 8081",
     "scrape-categories": "node scrape-categories.js",
-    "process-categories": "node process-categories.js",
-    "process-letters": "node process-letters.js",
-    "process-pages": "node process-pages.js",
-    "process-podcasts": "node process-podcasts.js",
+    "process": "node process.js",
     "prestart": "run-p scrape-categories migrate",
-    "start": "run-p serve process-categories process-letters process-pages process-podcasts"
+    "start": "run-p serve process"
   },
   "devDependencies": {
     "dotenv": "^6.0.0"

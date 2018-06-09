@@ -1,16 +1,14 @@
 const {shuffle} = require('./helpers')
 const {scrapeCategories} = require('./scrape')
-const queues = require('./queues')
+const queue = require('./queue')
 
 const main = async () => {
-  for (const key in queues) {
-    await queues[key].destroy()
-  }
+  await queue.destroy()
 
   for (const category of shuffle(await scrapeCategories())) {
-    const job = queues.categoriesQueue.createJob({category})
+    const job = queue.createJob({category})
     job.save()
-    // console.log(`Queued: ${category.title}`)
+    console.log(`Queued: ${category.title}`)
   }
 }
 

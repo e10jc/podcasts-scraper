@@ -25,4 +25,4 @@ class Inserter {
   }
 }
 
-module.exports = new Inserter()
+module.exports = Inserter
