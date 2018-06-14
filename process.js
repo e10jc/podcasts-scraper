@@ -15,7 +15,7 @@ const inserter = new Inserter()
 const progressBar = ProgressBar && new ProgressBar(':letters letters, :pages pages, :podcasts podcasts, :details details, :memory MB used, :rate per sec', {total: Number.MAX_SAFE_INTEGER})
 const ticks = {letters: 0, pages: 0, podcasts: 0, details: 0}
 
-queue.process(25, async ({data: {category, letter, page, podcast}}) => {
+queue.process(15, async ({data: {category, letter, page, podcast}}) => {
   if (podcast) {
     const details = await scrapePodcast(podcast)
     const row = {
