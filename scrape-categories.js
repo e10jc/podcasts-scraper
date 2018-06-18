@@ -6,8 +6,7 @@ const main = async () => {
   await queue.destroy()
 
   for (const category of shuffle(await scrapeCategories())) {
-    const job = queue.createJob({category})
-    job.save()
+    await queue.createJob({category}).save()
     console.log(`Queued: ${category.title}`)
   }
 }
