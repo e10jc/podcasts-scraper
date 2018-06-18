@@ -22,11 +22,10 @@
     "migrate": "knex migrate:latest",
     "dev": "next",
     "build": "next build",
-    "preserve": "run-s build",
     "serve": "next start --p 8081",
     "scrape-categories": "node scrape-categories.js",
     "process": "node process.js",
-    "prestart": "run-p scrape-categories migrate",
+    "prestart": "run-s migrate build scrape-categories",
     "start": "run-p serve process"
   },
   "devDependencies": {
