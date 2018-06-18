@@ -1,4 +1,4 @@
-const knex = require('../knex')
+const knex = require('./knex')
 
 const BATCH_SIZE = 100
 const TABLE_NAME = 'podcasts'
