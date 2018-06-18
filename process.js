@@ -10,7 +10,7 @@ const {
 const Inserter = require('./inserter')
 const inserter = new Inserter()
 
-queue.process(25, async ({data: {category, letter, page, podcast}}) => {
+queue.process(15, async ({data: {category, letter, page, podcast}}) => {
   if (podcast) {
     const details = await scrapePodcast(podcast)
     const row = {
