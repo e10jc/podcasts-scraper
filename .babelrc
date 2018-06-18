@@ -1,0 +1,20 @@
+{
+  "env": {
+    "build": {
+      "plugins": ["transform-object-rest-spread"],
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "8.11"
+          }
+        }
+      ]]
+    },
+    "development": {
+      "presets": ["next/babel"]
+    },
+    "production": {
+      "presets": ["next/babel"]
+    }
+  }
+}
