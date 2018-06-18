@@ -5,6 +5,7 @@ const scrape = async ({opts, url}) => {
     const {data} = await scrapeIt(url, opts)
     return data
   } catch (err) {
+    console.error(`Scrape error: ${err.message}`)
     return null
   }
 }
