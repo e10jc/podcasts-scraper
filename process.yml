@@ -1,0 +1,8 @@
+apps:
+  - name: 'server'
+    script: 'npm'
+    args: 'run serve'
+
+  - name: 'processor'
+    script: 'npm'
+    args: 'run process'
