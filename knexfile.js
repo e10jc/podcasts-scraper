@@ -14,4 +14,5 @@ module.exports = {
     database: process.env.RDS_DB_NAME
   },
   debug: false,
+  pool: {min: 1, max: 1},
 }
