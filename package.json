@@ -26,7 +26,7 @@
     "scrape-categories": "node scrape-categories.js",
     "process": "node process.js",
     "prestart": "run-s migrate build scrape-categories",
-    "start": "run-p serve process"
+    "start": "run-p process serve"
   },
   "devDependencies": {
     "dotenv": "^6.0.0"
