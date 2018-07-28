@@ -2,6 +2,9 @@ const Queue = require('bee-queue')
 
 const queue = new Queue('processor', {
   redis: {host: process.env.REDIS_HOST},
+  removeOnFailure: true,
+  removeOnSuccess: true,
+  sendEvents: false,
   stallInterval: 1000 * 60 * 15,
   storeJobs: false,
 })

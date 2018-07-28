@@ -10,7 +10,7 @@ const {
 const Inserter = require('./inserter')
 const inserter = new Inserter()
 
-queue.process(3, async ({data: {category, podcast}}) => {
+queue.process(process.env.NUM_PROCESSES, async ({data: {category, podcast}}) => {
   try {
     if (podcast) {
       const details = await scrapePodcast(podcast)
@@ -21,7 +21,10 @@ queue.process(3, async ({data: {category, podcast}}) => {
         ...details
       }
       await inserter.push(row)
-    } else if (category) {
+      return
+    }
+    
+    if (category) {
       console.log(`${new Date()} Scraping ${category.title}...`)
       for (const letter of shuffle(await scrapeLetters(category))) {
         for (const page of shuffle(await scrapePages(letter))) {
@@ -30,8 +33,13 @@ queue.process(3, async ({data: {category, podcast}}) => {
           }
         }
       }
+      return
     }
   } catch (err) {
     console.error(`Process error: ${err.message}`)
   }
+})
+
+process.on('SIGINT', () => {
+  queue.close()
 })
