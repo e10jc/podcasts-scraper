@@ -42,4 +42,5 @@ queue.process(process.env.NUM_PROCESSES, async ({data: {category, podcast}}) => 
 
 process.on('SIGINT', () => {
   queue.close()
+  process.exit()
 })
