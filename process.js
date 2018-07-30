@@ -1,4 +1,5 @@
 const {shuffle} = require('./helpers')
+const knex = require('./knex')
 const queue = require('./queue')
 const {
   scrapeLetters,
@@ -7,20 +8,30 @@ const {
   scrapePodcasts,
 } = require('./scrape')
 
-const Inserter = require('./inserter')
-const inserter = new Inserter()
-
 queue.process(process.env.NUM_PROCESSES, async ({data: {category, podcast}}) => {
   try {
     if (podcast) {
       const details = await scrapePodcast(podcast)
       const row = {
         category: category.title,
-        title: podcast.title,
+        title: unescape(encodeURIComponent(podcast.title)),
         url: podcast.url,
         ...details
       }
-      await inserter.push(row)
+      try {
+        let podcastRow = await knex('podcasts').where({id: row.id}).first()
+        if (!podcastRow) {
+          podcastRow = await knex('podcasts').insert(row)
+          console.log(new Date(), `Inserted ${row.url}`)
+        }
+        else {
+          await knex('podcasts').where({id: row.id}).update({reviewsCnt: row.reviewsCnt, reviewsAvg: row.reviewsAvg})
+          console.log(new Date(), `Updated ${row.url}`)
+        }
+        await knex('scrapes').insert({podcastId: row.id, reviewsCnt: row.reviewsCnt, reviewsAvg: row.reviewsAvg, createdAt: new Date()})
+      } catch (err) {
+        console.error(`Error:`, err)
+      }
       return
     }
     

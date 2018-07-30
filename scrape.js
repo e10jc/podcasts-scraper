@@ -95,7 +95,9 @@ const scrapePodcast = async (podcast) => {
         convert: (html) => {
           if (html) {
             const num = parseFloat(html)
-            return isNaN(num) ? null : num
+            return isNaN(num) ? 0 : num
+          } else {
+            return 0
           }
         },
         selector: 'span[itemprop="ratingValue"]'
@@ -104,7 +106,9 @@ const scrapePodcast = async (podcast) => {
         convert: (html) => {
           if (html) {
             const num = parseInt(html.split(' ')[0], 10)
-            return isNaN(num) ? null : num
+            return isNaN(num) ? 0 : num
+          } else {
+            return 0
           }
         },
         selector: '.rating-count',
