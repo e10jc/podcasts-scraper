@@ -46,6 +46,7 @@ export default class extends React.Component {
               <th className='text-center'>Category</th>
               <th className='text-center'>Avg</th>
               <th className='text-center'>Num</th>
+              <th className='text-center'>Change</th>
               <th className='text-center'>Updated</th>
             </tr>
           </thead>
@@ -58,6 +59,7 @@ export default class extends React.Component {
                 <td className='text-center text-nowrap'>{podcast.category}</td>
                 <td className='text-center text-nowrap'>{podcast.reviewsAvg && podcast.reviewsAvg.toFixed(2)}</td>
                 <td className='text-center text-nowrap'>{podcast.reviewsCnt && podcast.reviewsCnt.toLocaleString()}</td>
+                <td className='text-center text-nowrap'>{podcast.trending || '-'}</td>
                 <td className='text-center text-nowrap'>{formatDate(podcast.updated_at, 'MMMM D')}</td>
               </tr>
             ))}
