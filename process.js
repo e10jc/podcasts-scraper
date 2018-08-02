@@ -27,7 +27,7 @@ queue.process(process.env.NUM_PROCESSES, async ({data: {category, podcast}}) => 
         else {
           const scrapeRow = await knex('scrapes').where({podcastId: row.id}).orderBy('createdAt', 'DESC').first()
           const trending = scrapeRow ? row.reviewsCnt - scrapeRow.reviewsCnt : null
-          await knex('podcasts').where({id: row.id}).update({reviewsCnt: row.reviewsCnt, reviewsAvg: row.reviewsAvg, trending})
+          await knex('podcasts').where({id: row.id}).update({reviewsCnt: row.reviewsCnt, reviewsAvg: row.reviewsAvg, trending, updated_at: new Date()})
           console.log(new Date(), `Updated ${row.url}`)
         }
         await knex('scrapes').insert({podcastId: row.id, reviewsCnt: row.reviewsCnt, reviewsAvg: row.reviewsAvg, createdAt: new Date()})
