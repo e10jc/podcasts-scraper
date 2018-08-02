@@ -25,8 +25,7 @@ export default class extends React.Component {
             </h1>
             <h2 className="h5">
               <small>
-                <span>{this.props.podcastsCnt.toLocaleString()} scraped, </span>
-                <span>updated {formatDate(this.lastUpdate(), 'MMMM D')}</span>
+                <span>{this.props.podcastsCnt.toLocaleString()} scraped</span>
               </small>
             </h2>
           </div>
@@ -47,6 +46,7 @@ export default class extends React.Component {
               <th className='text-center'>Category</th>
               <th className='text-center'>Avg</th>
               <th className='text-center'>Num</th>
+              <th className='text-center'>Updated</th>
             </tr>
           </thead>
           <tbody>
@@ -58,6 +58,7 @@ export default class extends React.Component {
                 <td className='text-center text-nowrap'>{podcast.category}</td>
                 <td className='text-center text-nowrap'>{podcast.reviewsAvg && podcast.reviewsAvg.toFixed(2)}</td>
                 <td className='text-center text-nowrap'>{podcast.reviewsCnt && podcast.reviewsCnt.toLocaleString()}</td>
+                <td className='text-center text-nowrap'>{formatDate(podcast.updated_at, 'MMMM D')}</td>
               </tr>
             ))}
           </tbody>
@@ -74,13 +75,6 @@ export default class extends React.Component {
   handleCategoryChange = e => {
     window.location.href = e.target.value ? `/?category=${e.target.value}` : '/'
   }
-
-  lastUpdate = () => (
-    this.props.podcasts.reduce((last, p) => {
-      const updated = new Date(p.updated_at)
-      return updated > last ? updated : last
-    }, new Date(0))
-  )
 
   pageHrefBuilder = (page) => {
     const {category} = this.props
