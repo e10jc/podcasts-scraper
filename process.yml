@@ -6,3 +6,8 @@ apps:
   - name: 'processor'
     script: 'npm'
     args: 'run process'
+
+  - name: 'scrape-categories'
+    script: 'npm'
+    args: 'run scrape-categories'
+    cron_restart: '0 0 * * 1,3,5'
