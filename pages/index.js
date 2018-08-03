@@ -9,10 +9,11 @@ export default class extends React.Component {
   static async getInitialProps ({query}) {
     const {category} = query
     const page = parseInt(query.page || '1', 10)
-    const podcasts = await knex('podcasts').orderBy('reviewsCnt', 'desc').where(category ? {category} : {}).limit(PER_PAGE).offset((page - 1) * PER_PAGE)
+    const sort = query.sort
+    const podcasts = await knex('podcasts').orderBy(sort || 'reviewsCnt', 'desc').where(category ? {category} : {}).limit(PER_PAGE).offset((page - 1) * PER_PAGE)
     const podcastsCnt = (await knex('podcasts').count('* as cnt'))[0].cnt
     const categories = (await knex('podcasts').distinct('category')).map(c => c.category)
-    return {category, categories, page, podcasts, podcastsCnt}
+    return {category, categories, page, podcasts, podcastsCnt, sort}
   }
 
   render () {
@@ -46,8 +47,12 @@ export default class extends React.Component {
               <th className='text-center'>Publisher</th>
               <th className='text-center'>Category</th>
               <th className='text-center'>Avg</th>
-              <th className='text-center'>Num</th>
-              <th className='text-center'>Change</th>
+              <th className='text-center'>
+                <a href={this.sortHref('reviewsCnt')}>Num</a>
+              </th>
+              <th className='text-center'>
+                <a href={this.sortHref('trending')}>Change</a>
+              </th>
               <th className='text-center'>Updated</th>
             </tr>
           </thead>
@@ -80,16 +85,19 @@ export default class extends React.Component {
     window.location.href = e.target.value ? `/?category=${e.target.value}` : '/'
   }
 
-  pageHrefBuilder = (page) => {
+  hrefBuilder = ({page, sort}) => {
     const {category} = this.props
+    const sortQuery = sort || this.props.sort
     const query = [
       category && `category=${encodeURIComponent(category)}`, 
-      page && `page=${page}`
+      page && `page=${page}`,
+      sortQuery && `sort=${sortQuery}`,
     ].filter(p => p).join('&')
     return query ? `/?${query}` : '/'
   }
 
-  pageNextHref = () => this.pageHrefBuilder(this.props.page + 1)
+  pageNextHref = () => this.hrefBuilder({page: this.props.page + 1})
+  pagePrevHref = () => this.hrefBuilder({page: this.props.page > 2 && this.props.page - 1})
 
-  pagePrevHref = () => this.pageHrefBuilder(this.props.page > 2 && this.props.page - 1)
+  sortHref = (sort) => this.hrefBuilder({sort})
 }
