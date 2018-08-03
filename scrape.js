@@ -91,6 +91,14 @@ const scrapePodcast = async (podcast) => {
         },
         selector: 'meta[name="apple:content_id"]',
       },
+      publisher: {
+        convert: (html) => {
+          if (html) {
+            return html.replace(/More by /, '')
+          }
+        },
+        selector: '.more-by h4'
+      },
       reviewsAvg: {
         convert: (html) => {
           if (html) {

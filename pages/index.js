@@ -43,6 +43,7 @@ export default class extends React.Component {
           <thead>
             <tr>
               <th>Name</th>
+              <th className='text-center'>Publisher</th>
               <th className='text-center'>Category</th>
               <th className='text-center'>Avg</th>
               <th className='text-center'>Num</th>
@@ -56,6 +57,7 @@ export default class extends React.Component {
                 <td>
                   <a href={podcast.url}>{podcast.title}</a>
                 </td>
+                <td className='text-center text-nowrap'>{podcast.publisher}</td>
                 <td className='text-center text-nowrap'>{podcast.category}</td>
                 <td className='text-center text-nowrap'>{podcast.reviewsAvg && podcast.reviewsAvg.toFixed(2)}</td>
                 <td className='text-center text-nowrap'>{podcast.reviewsCnt && podcast.reviewsCnt.toLocaleString()}</td>
