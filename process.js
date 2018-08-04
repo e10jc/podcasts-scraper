@@ -8,9 +8,14 @@ const {
   scrapePodcasts,
 } = require('./scrape')
 
+let startDatePerS
+let numScrapes = 0
+
 queue.process(process.env.NUM_PROCESSES, async ({data: {category, podcast}}) => {
   try {
     if (podcast) {
+      if (!startDatePerS) startDatePerS = new Date()
+
       const details = await scrapePodcast(podcast)
       const row = {
         category: category.title,
@@ -22,24 +27,30 @@ queue.process(process.env.NUM_PROCESSES, async ({data: {category, podcast}}) => 
         let podcastRow = await knex('podcasts').where({id: row.id}).first()
         if (!podcastRow) {
           podcastRow = await knex('podcasts').insert(row)
-          console.log(new Date(), `Inserted ${row.url}`)
         }
         else {
           const scrapeRow = await knex('scrapes').where({podcastId: row.id}).orderBy('createdAt', 'DESC').first()
-          const trending = scrapeRow ? row.reviewsCnt - scrapeRow.reviewsCnt : null
           await knex('podcasts').where({id: row.id}).update({
             publisher: row.publisher,
             reviewsCnt: row.reviewsCnt, 
             reviewsAvg: row.reviewsAvg, 
-            trending, 
+            trending: scrapeRow ? row.reviewsCnt - scrapeRow.reviewsCnt : null,
             updated_at: new Date()
           })
-          console.log(new Date(), `Updated ${row.url}`)
         }
         await knex('scrapes').insert({podcastId: row.id, reviewsCnt: row.reviewsCnt, reviewsAvg: row.reviewsAvg, createdAt: new Date()})
       } catch (err) {
         console.error(`Error:`, err)
       }
+
+      ++numScrapes
+      const totalTimeS = (new Date() - startDatePerS) / 1000
+      if (totalTimeS >= 10) {
+        console.log(new Date(), 'scrapes per/s:', (numScrapes / totalTimeS).toFixed(2))
+        numScrapes = 0
+        startDatePerS = new Date()
+      }
+
       return
     }
     
