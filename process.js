@@ -17,12 +17,18 @@ queue.process(process.env.NUM_PROCESSES, async ({data: {category, podcast}}) => 
       if (!startDatePerS) startDatePerS = new Date()
 
       const details = await scrapePodcast(podcast)
+      if (!details.id) {
+        console.error('Unable to find id for scrape details', details)
+        return
+      }
+
       const row = {
         category: category.title,
         title: unescape(encodeURIComponent(podcast.title)),
         url: podcast.url,
         ...details
       }
+
       try {
         let podcastRow = await knex('podcasts').where({id: row.id}).first()
         if (!podcastRow) {
