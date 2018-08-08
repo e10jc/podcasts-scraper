@@ -10,15 +10,16 @@ const {
 
 let startDatePerS
 let numScrapes = 0
+const SECS_BETWEEN_LOG = 30
 
-queue.process(process.env.NUM_PROCESSES, async ({data: {category, podcast}}) => {
+queue.process(parseInt(process.env.NUM_PROCESSES || '10'), async ({data: {category, podcast}}) => {
   try {
     if (podcast) {
       if (!startDatePerS) startDatePerS = new Date()
 
       const details = await scrapePodcast(podcast)
       if (!details.id) {
-        console.error('Unable to find id for scrape details', details)
+        console.error('Unable to scrape details for', podcast.url)
         return
       }
 
@@ -49,14 +50,6 @@ queue.process(process.env.NUM_PROCESSES, async ({data: {category, podcast}}) => 
         console.error(`Error:`, err)
       }
 
-      ++numScrapes
-      const totalTimeS = (new Date() - startDatePerS) / 1000
-      if (totalTimeS >= 10) {
-        console.log(new Date(), 'scrapes per/s:', (numScrapes / totalTimeS).toFixed(2))
-        numScrapes = 0
-        startDatePerS = new Date()
-      }
-
       return
     }
     
@@ -73,6 +66,14 @@ queue.process(process.env.NUM_PROCESSES, async ({data: {category, podcast}}) => 
     }
   } catch (err) {
     console.error(`Process error: ${err.message}`)
+  } finally {
+    ++numScrapes
+    const totalTimeS = (new Date() - startDatePerS) / 1000
+    if (totalTimeS >= SECS_BETWEEN_LOG) {
+      console.log(new Date(), 'scrapes per/s:', (numScrapes / totalTimeS).toFixed(2))
+      numScrapes = 0
+      startDatePerS = new Date()
+    }
   }
 })
 

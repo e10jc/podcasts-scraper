@@ -10,5 +10,5 @@ apps:
   - name: 'scrape-categories'
     script: 'npm'
     args: 'run scrape-categories'
-    cron_restart: '0 0 * * 1,3,5'
+    cron_restart: '0 0 * * 1,4'
     autorestart: false
