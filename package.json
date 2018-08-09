@@ -27,7 +27,7 @@
     "scrape-categories": "node scrape-categories.js",
     "process": "node process.js",
     "prestart": "run-s migrate build scrape-categories",
-    "start": "pm2 start process.yml",
+    "start": "pm2 start process.yml -i max",
     "poststart": "pm2 logs"
   },
   "devDependencies": {
