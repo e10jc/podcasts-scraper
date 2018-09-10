@@ -4,14 +4,7 @@ apps:
     args: 'run serve'
     instances: 1
 
-  - name: 'processor'
+  - name: 'scraper'
     script: 'npm'
-    args: 'run process'
+    args: 'run scrape'
     instances: 0
-
-  - name: 'scrape-categories'
-    script: 'npm'
-    args: 'run scrape-categories'
-    cron_restart: '0 0 * * 1,4'
-    autorestart: false
-    instances: 1
