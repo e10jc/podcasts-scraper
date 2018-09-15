@@ -1,15 +1,18 @@
 import {format as formatDate} from 'date-fns'
-import React from 'react'
-
-import knex from '../knex'
+import * as React from 'react'
 
 const PER_PAGE = 100
 
-export default class extends React.Component {
+interface Props {
+  podcast: any,
+  scrapes: any[],
+}
+
+export default class extends React.Component<Props> {
   static async getInitialProps ({query}) {
     const {id} = query
-    const podcast = await knex('podcasts').where({id}).first()
-    const scrapes = await knex('scrapes').where({podcastId: id}).orderBy('createdAt', 'DESC')
+    const podcast = [] // await knex('podcasts').where({id}).first()
+    const scrapes = [] // await knex('scrapes').where({podcastId: id}).orderBy('createdAt', 'DESC')
     return {podcast, scrapes}
   }
 

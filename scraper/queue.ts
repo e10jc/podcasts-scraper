@@ -1,6 +1,6 @@
-const Queue = require('bee-queue')
+import * as Queue from 'bee-queue'
 
-const queue = new Queue('processor', {
+export const queue = new Queue('processor', {
   redis: {host: process.env.REDIS_HOST},
   removeOnFailure: true,
   removeOnSuccess: true,
@@ -24,5 +24,3 @@ queue.on('stalled', () => {
 queue.on('failed', (_, err) => {
   console.error(`Queue failure: ${err.message}`)
 })
-
-module.exports = queue

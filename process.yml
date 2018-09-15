@@ -8,3 +8,10 @@ apps:
     script: 'npm'
     args: 'run scrape'
     instances: 0
+
+  - name: 'scrape-categories'
+    script: 'npm'
+    args: 'run scrape-categories'
+    cron_restart: '0 0 * * 1,4'
+    autorestart: false
+    instances: 1

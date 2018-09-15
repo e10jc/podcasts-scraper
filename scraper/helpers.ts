@@ -1,4 +1,4 @@
-const scrapeIt = require('scrape-it')
+import * as scrapeIt from 'scrape-it'
 
 const scrape = async ({opts, url}) => {
   try {
@@ -10,8 +10,8 @@ const scrape = async ({opts, url}) => {
   }
 }
 
-const scrapeCategories = async () => {
-  const data = await scrape({
+export const scrapeCategories = async () => {
+  const data: any = await scrape({
     opts: {
       categories: {
         listItem: 'a.top-level-genre',
@@ -28,8 +28,8 @@ const scrapeCategories = async () => {
   return data ? data.categories : []
 }
 
-const scrapeLetters = async (category) => {
-  const data = await scrape({
+export const scrapeLetters = async (category) => {
+  const data: any = await scrape({
     opts: {
       letters: {
         listItem: 'ul.alpha li a',
@@ -45,8 +45,8 @@ const scrapeLetters = async (category) => {
   return data ? data.letters : []
 }
 
-const scrapePages = async (letter) => {
-  const data = await scrape({
+export const scrapePages = async (letter) => {
+  const data: any = await scrape({
     opts: {
       pages: {
         listItem: 'ul.paginate li a',
@@ -62,8 +62,8 @@ const scrapePages = async (letter) => {
   return data ? data.pages : []
 }
 
-const scrapePodcasts = async (page) => {
-  const data = await scrape({
+export const scrapePodcasts = async (page) => {
+  const data: any = await scrape({
     opts: {
       podcasts: {
         listItem: '#selectedcontent ul li a',
@@ -80,8 +80,8 @@ const scrapePodcasts = async (page) => {
   return data ? data.podcasts : []
 }
 
-const scrapePodcast = async (podcast) => {
-  const data = await scrape({
+export const scrapePodcast = async (podcast) => {
+  const data: any = await scrape({
     opts: {
       id: {
         attr: 'content',
@@ -126,5 +126,3 @@ const scrapePodcast = async (podcast) => {
   })
   return data || {}
 }
-
-module.exports = {scrapeCategories, scrapeLetters, scrapePages, scrapePodcasts, scrapePodcast}

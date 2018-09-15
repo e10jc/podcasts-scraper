@@ -1,19 +1,19 @@
 import {format as formatDate} from 'date-fns'
-import React from 'react'
+import * as React from 'react'
 
-import knex from '../knex'
+interface State {
+  category: string,
+  categories: any[],
+  page: number,
+  podcasts: any[],
+  podcastsCnt: number,
+  sort: string,
+}
 
-const PER_PAGE = 100
-
-export default class extends React.Component {
-  static async getInitialProps ({query}) {
-    const {category} = query
-    const page = parseInt(query.page || '1', 10)
-    const sort = query.sort
-    const podcasts = await knex('podcasts').orderBy(sort || 'reviewsCnt', 'desc').where(category ? {category} : {}).limit(PER_PAGE).offset((page - 1) * PER_PAGE)
-    const podcastsCnt = (await knex('podcasts').count('* as cnt'))[0].cnt
-    const categories = (await knex('podcasts').distinct('category')).map(c => c.category)
-    return {category, categories, page, podcasts, podcastsCnt, sort}
+export default class extends React.Component<{}, State> {
+  async componentDidMount () {
+    const res = await window.fetch('/api/home')
+    this.setState(await res.json())
   }
 
   render () {
@@ -26,14 +26,14 @@ export default class extends React.Component {
             </h1>
             <h2 className="h5">
               <small>
-                <span>{this.props.podcastsCnt.toLocaleString()} scraped</span>
+                <span>{this.state.podcastsCnt.toLocaleString()} scraped</span>
               </small>
             </h2>
           </div>
           <div>
-            <select name='category' onChange={this.handleCategoryChange} value={encodeURIComponent(this.props.category)}>
+            <select name='category' onChange={this.handleCategoryChange} value={encodeURIComponent(this.state.category)}>
               <option value=''></option>
-              {this.props.categories.map(c => (
+              {this.state.categories.map(c => (
                 <option key={c} value={encodeURIComponent(c)}>{c}</option>
               ))}
             </select>
@@ -57,7 +57,7 @@ export default class extends React.Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.podcasts.map(podcast => (
+            {this.state.podcasts.map(podcast => (
               <tr key={podcast.id}>
                 <td>
                   <a href={podcast.url}>{podcast.title}</a>
@@ -76,7 +76,7 @@ export default class extends React.Component {
         </table>
 
         <div className='grid-x align-center'>
-          {this.props.page > 1 && <a className='padding-1' href={this.pagePrevHref()}>Prev</a>}
+          {this.state.page > 1 && <a className='padding-1' href={this.pagePrevHref()}>Prev</a>}
           <a className='padding-1' href={this.pageNextHref()}>Next</a>
         </div>
       </div>
@@ -87,9 +87,9 @@ export default class extends React.Component {
     window.location.href = e.target.value ? `/?category=${e.target.value}` : '/'
   }
 
-  hrefBuilder = ({page, sort}) => {
-    const {category} = this.props
-    const sortQuery = sort || this.props.sort
+  hrefBuilder = ({page, sort}: any) => {
+    const {category} = this.state
+    const sortQuery = sort || this.state.sort
     const query = [
       category && `category=${encodeURIComponent(category)}`, 
       page && `page=${page}`,
@@ -98,8 +98,17 @@ export default class extends React.Component {
     return query ? `/?${query}` : '/'
   }
 
-  pageNextHref = () => this.hrefBuilder({page: this.props.page + 1})
-  pagePrevHref = () => this.hrefBuilder({page: this.props.page > 2 && this.props.page - 1})
+  pageNextHref = () => this.hrefBuilder({page: this.state.page + 1})
+  pagePrevHref = () => this.hrefBuilder({page: this.state.page > 2 && this.state.page - 1})
 
   sortHref = (sort) => this.hrefBuilder({sort})
+
+  state = {
+    category: '',
+    categories: [],
+    page: 1,
+    podcasts: [],
+    podcastsCnt: 0,
+    sort: '',
+  }
 }

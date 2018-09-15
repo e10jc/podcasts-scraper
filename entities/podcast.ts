@@ -7,10 +7,10 @@ export class Podcast {
   @PrimaryGeneratedColumn()
   id: number
 
-  @Column({nullable: true})
+  @Column('varchar', {nullable: true})
   category: string
 
-  @Column({nullable: true})
+  @Column('varchar', {nullable: true})
   title: string
 
   @Column('text', {nullable: true})
@@ -31,7 +31,7 @@ export class Podcast {
   @Column('int', {nullable: true})
   trending: number
 
-  @Column({nullable: true})
+  @Column('varchar', {nullable: true})
   publisher: string
 
   @OneToMany(type => Scrape, scrape => scrape.podcast)
