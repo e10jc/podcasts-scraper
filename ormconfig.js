@@ -1,5 +1,5 @@
-const dirPrefix = process.env.NODE_ENV === 'production' ? `.next/production-server/` : ''
-const fileSuffix = process.env.NODE_ENV === 'production' ? 'js' : 'ts'
+const dirPrefix = process.env.IS_SERVER ? `.next/production-server/` : ''
+const fileSuffix = process.env.IS_SERVER ? 'js' : 'ts'
 
 module.exports = {
   'type': 'mysql',
