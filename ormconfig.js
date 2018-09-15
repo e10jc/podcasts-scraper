@@ -1,3 +1,6 @@
+const dirPrefix = process.env.NODE_ENV === 'production' ? `.next/production-server/` : ''
+const fileSuffix = process.env.NODE_ENV === 'production' ? 'js' : 'ts'
+
 module.exports = {
   'type': 'mysql',
   'host': process.env.RDS_HOSTNAME,
@@ -7,18 +10,12 @@ module.exports = {
   'database': process.env.RDS_DB_NAME,
   'synchronize': true,
   'logging': true,
-  'entities': [
-    'entities/**/*.ts'
-  ],
-  'migrations': [
-    'migrations/**/*.ts'
-  ],
-  'subscribers': [
-    'subscribers/**/*.ts'
-  ],
+  'entities': [`${dirPrefix}entities/**/*.${fileSuffix}`],
+  'migrations': [`${dirPrefix}migrations/**/*.${fileSuffix}`],
+  'subscribers': [`${dirPrefix}subscribers/**/*.${fileSuffix}`],
   'cli': {
-    'entitiesDir': 'entities',
-    'migrationsDir': 'migrations',
-    'subscribersDir': 'subscribers'
+    'entitiesDir': `${dirPrefix}entities`,
+    'migrationsDir': `${dirPrefix}migrations`,
+    'subscribersDir': `${dirPrefix}subscribers`,
   }
 }
