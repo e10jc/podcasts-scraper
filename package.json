@@ -35,7 +35,7 @@
       "process-dev": "ts-node scraper/process.ts",
       "process": "cross-env IS_SCRAPER=1 node .scraper-dist/scraper/process.js",
       "synchronize": "typeorm schema:sync",
-      "prestart": "run-s synchronize build build-server build-scraper",
+      "prestart": "run-s build build-server build-scraper",
       "start": "pm2 start process.yml -i max",
       "poststart": "pm2 logs"
    },
