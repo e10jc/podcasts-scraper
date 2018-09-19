@@ -32,7 +32,8 @@
       "serve": "cross-env IS_SERVER=1 node .next/production-server/server/index.js",
       "scrape-categories": "ts-node scraper/scrape-categories.ts",
       "process": "ts-node scraper/process.ts",
-      "prestart": "run-s build build-server",
+      "synchronize": "typeorm schema:sync",
+      "prestart": "run-s synchronize build build-server",
       "start": "pm2 start process.yml -i max",
       "poststart": "pm2 logs"
    },
