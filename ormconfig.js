@@ -1,5 +1,13 @@
-const dirPrefix = process.env.IS_SERVER ? `.next/production-server/` : ''
-const fileSuffix = process.env.IS_SERVER ? 'js' : 'ts'
+const dirPrefix = (() => {
+  if (process.env.IS_SERVER) return '.next/production-server/'
+  else if (process.env.IS_SCRAPER) return '.scraper-dist/'
+  else return ''
+})()
+
+const fileSuffix = (() => {
+  if (process.env.IS_SERVER || process.env.IS_SCRAPER) return 'js'
+  else return 'ts'
+})()
 
 module.exports = {
   'type': 'mysql',

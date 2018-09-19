@@ -21,7 +21,6 @@
       "react-dom": "^16.4.0",
       "reflect-metadata": "^0.1.10",
       "scrape-it": "^5.0.5",
-      "ts-node": "3.3.0",
       "typeorm": "0.2.7",
       "typescript": "^3.0.3"
    },
@@ -29,19 +28,24 @@
       "dev": "nodemon -r dotenv/config server/index.ts",
       "build": "next build",
       "build-server": "tsc --project tsconfig.server.json",
+      "build-scraper": "tsc --project tsconfig.scraper.json",
       "serve": "cross-env IS_SERVER=1 node .next/production-server/server/index.js",
-      "scrape-categories": "ts-node scraper/scrape-categories.ts",
-      "process": "ts-node scraper/process.ts",
+      "scrape-categories-dev": "ts-node scraper/scrape-categories.ts",
+      "scrape-categories": "cross-env IS_SCRAPER=1 node .scraper-dist/scraper/scrape-categories.js",
+      "process-dev": "ts-node scraper/process.ts",
+      "process": "cross-env IS_SCRAPER=1 node .scraper-dist/scraper/process.js",
       "synchronize": "typeorm schema:sync",
-      "prestart": "run-s synchronize build build-server",
+      "prestart": "run-s synchronize build build-server build-scraper",
       "start": "pm2 start process.yml -i max",
       "poststart": "pm2 logs"
    },
    "devDependencies": {
+      "@types/cheerio": "^0.22.9",
       "@types/next": "^6.1.4",
       "@types/node": "^8.0.29",
       "@types/react": "^16.4.14",
       "dotenv": "^6.0.0",
-      "nodemon": "^1.18.4"
+      "nodemon": "^1.18.4",
+      "ts-node": "3.3.0"
    }
 }
